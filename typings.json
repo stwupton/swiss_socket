@@ -1,0 +1,9 @@
+{
+  "name": "swiss_socket",
+  "dependencies": {},
+  "devDependecies": {},
+  "globalDependencies": {
+    "node": "registry:dt/node#6.0.0+20160818175514",
+    "ws": "registry:dt/ws#0.0.0+20160724122153"
+  }
+}

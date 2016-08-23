@@ -1,0 +1,35 @@
+{
+  "name": "swiss_socket",
+  "version": "0.0.1",
+  "description": "WebSocket server in Node.",
+  "main": "build/lib/swiss_socket.js",
+  "typings": "build/lib/swiss_socket.d.ts",
+  "dependencies": {
+    "ws": "^1.1.1"
+  },
+  "globalDevDependencies": {
+    "typescript": "^1.8.10",
+    "typings": "^1.3.2"
+  },
+  "engines": {
+    "node": "4.2.4"
+  },
+  "bin": {
+    "ss": "node ./build/bin/ss.js"
+  },
+  "scripts": {
+    "prepublish": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ss": "node ./build/bin/ss.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stwupton/swiss_socket.git"
+  },
+  "author": "Steven Upton (supton.sz@gmail.com)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/stwupton/swiss_socket/issues"
+  },
+  "homepage": "https://github.com/stwupton/swiss_socket#readme"
+}
