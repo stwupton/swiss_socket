@@ -41,8 +41,6 @@ export class SocketServer {
             delete this.socketPools[this.socketPools.indexOf(pool)];
         });
 
-        webSocket.send(JSON.stringify(this.server.options));
-
       });
 
     });

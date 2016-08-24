@@ -1,6 +1,6 @@
 {
   "name": "swiss_socket",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "WebSocket server in Node.",
   "main": "build/lib/swiss_socket.js",
   "typings": "build/lib/swiss_socket.d.ts",
@@ -15,12 +15,10 @@
     "node": "4.2.4"
   },
   "bin": {
-    "ss": "node ./build/bin/ss.js"
+    "ss": "bin/ss"
   },
   "scripts": {
-    "prepublish": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "ss": "node ./build/bin/ss.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
