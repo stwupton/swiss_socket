@@ -1,0 +1,5 @@
+lib
+typings
+typings.json
+tsconfig.json
+bin/ss.ts
