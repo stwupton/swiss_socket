@@ -1,42 +1,51 @@
-import * as http from 'http';
-import {WebSocket, Server} from 'ws';
+import {SocketPool, WebSocket, Server} from './socket_pool';
 
-module SwissSocket {
+export class SocketServer {
 
-  import SocketPool = SwissSocket.SocketPool;
+  host: string;
+  port: number;
+  server: Server;
+  socketPools: SocketPool[] = [];
 
-  export class SwissSocket {
+  constructor(host: string = '0.0.0.0', port: number = 0) {
+    this.host = host;
+    this.port = port;
+  }
 
-    address: string;
-    port: number;
-    server: Server;
-    socketPools: Array<SocketPool> = [];
+  public start(): void {
 
-    constructor(address: string, port: number = 80, max: number = 0) {
-      this.address = address;
-      this.port = port;
-    }
+    this.server = new Server({host: this.host, port: this.port}, () => {
 
+      console.log(`Swiss Socket server listening on port: ${this.server._server.address().port}, host: ${this.server._server.address().address}`);
 
-    public start(): void {
+      this.server.on('connection', (webSocket: WebSocket): void => {
 
-      this.server = new Server({host: this.address, port: this.port}, () => {
+        // Get existing pool with identifier.
+        let pools: SocketPool[] = this.socketPools.filter(
+            (pool: SocketPool) => pool.identifier == webSocket.upgradeReq.url);
 
-        console.log(`Swiss Socket server listening on port: ${this.server.options.port}, host: ${this.server.options.host}`);
+        let pool: SocketPool;
+        if (pools.length > 0) {
+          pool = pools[0];
+        } else {
+          pool = new SocketPool(webSocket.upgradeReq.url)
+          this.socketPools.push(pool);
+        }
 
-        this.server.on('connection', (webSocket: WebSocket): void => {
+        pool.addSocket(webSocket);
 
-          let pools: Array<SocketPool> = this.socketPools.filter(
-              (pool: SocketPool) => pool.identifier == webSocket.upgradeReq.url);
-
-          if (pools.length > 0)
-            pools[0].addSocket(webSocket);
-
+        // Remove socket pool when all `WebSocket`'s have disconnected.
+        webSocket.on('close', () => {
+          pool.disconnected++;
+          if (pool.disconnected == pool.clients.length)
+            delete this.socketPools[this.socketPools.indexOf(pool)];
         });
+
+        webSocket.send(JSON.stringify(this.server.options));
 
       });
 
-    }
+    });
 
   }
 

@@ -1,7 +1,6 @@
 node_modules/
 built/*
 build
-typings
 tests/cases/rwc/*
 tests/cases/test262/*
 tests/cases/perf/*
