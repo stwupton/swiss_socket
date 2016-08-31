@@ -15,7 +15,8 @@
     "node": "4.2.4"
   },
   "bin": {
-    "ss": "bin/ss"
+    "ss": "bin/ss",
+    "ssock": "bin/ss"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

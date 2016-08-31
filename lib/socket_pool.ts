@@ -13,7 +13,7 @@ export class SocketPool {
     this.maxSockets = maxSockets;
   }
 
-  public addSocket(webSocket: WebSocket): boolean { console.log(this.maxSockets);
+  public addSocket(webSocket: WebSocket): boolean {
 
     let disconnected: WebSocket[] =
       this.clients.filter((ws: WebSocket) => ws.readyState == ws.CLOSED);
