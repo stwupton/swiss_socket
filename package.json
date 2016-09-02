@@ -1,6 +1,6 @@
 {
   "name": "swiss_socket",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "WebSocket server in Node.",
   "main": "build/lib/swiss_socket.js",
   "typings": "build/lib/swiss_socket.d.ts",
