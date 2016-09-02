@@ -27,18 +27,18 @@ export class SocketPool {
       this.clients.push(webSocket);
 
     // Send initial ID.
-    let response: any = {_ss_id: this.clients.indexOf(webSocket)};
-    webSocket.send(JSON.stringify(response));
+    let clientId = this.clients.indexOf(webSocket);
+    webSocket.send(JSON.stringify({_ss_id: clientId}));
 
     // Braodcast message to all open `WebSocket`'s in this pool.
     webSocket.on('message', (message: string) => {
-      response.message = message;
-      this.broadcast(webSocket, response);
+      let toBroadcast: string = `{"_ss_id": ${clientId}, "message": ${message}}`;
+      this.broadcast(webSocket, toBroadcast);
     });
 
     // Let all clients know that socket has disconnected.
     webSocket.on('close', () => {
-      this.broadcast(webSocket, {_ss_disconnect: this.clients.indexOf(webSocket)});
+      this.broadcast(webSocket, JSON.stringify({_ss_disconnect: clientId}));
     });
 
     return true;
@@ -49,7 +49,7 @@ export class SocketPool {
     this.clients
       .filter((ws: WebSocket) => ws != sender && ws.readyState == ws.OPEN)
       .forEach((ws: WebSocket) => {
-        ws.send(JSON.stringify(message));
+        ws.send(message);
       });
   }
 
