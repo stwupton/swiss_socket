@@ -23,6 +23,21 @@ export class SocketServer {
 
   }
 
+  private getQueryParameters(query: string): {} {
+
+    let parameters: {} = {};
+
+    let params: string[] = query.split('&');
+    for (let i = 0; i < params.length; i++) {
+      let param: string[] = params[i].split('=');
+      if (param[0])
+        parameters[param[0]] = param[1];
+    }
+
+    return parameters;
+
+  }
+
   public start(): void {
 
     this.server = new Server({host: this.host, port: this.port}, () => {
@@ -48,7 +63,31 @@ export class SocketServer {
             return;
           }
 
-          pool = new SocketPool(webSocket.upgradeReq.url, this.maxSockets);
+          // Get socket pool identifier and maximum sockets cap from query parameter.
+          let maxSockets: number = this.maxSockets;
+          let identifier: string = webSocket.upgradeReq.url;
+          if (identifier.search(new RegExp('\\?', 'g')) != -1) {
+
+            let urlSplit: string[] = identifier.split('?');
+            identifier = urlSplit[0];
+
+            let query: {} = this.getQueryParameters(urlSplit[1]);
+            if (query['max'] != null &&
+                query['max'].length > 0 &&
+                !isNaN(parseInt(query['max'])))
+              maxSockets = parseInt(query['max']);
+
+          }
+
+          // Check that the 'max' parameter specifies does not exceed the maximum
+          // defined when creating server.
+          if (maxSockets > this.maxSockets) {
+            webSocket.send(JSON.stringify({_ss_error: `Cannot specify a maximum of more than ${this.maxSockets}.`}));
+            webSocket.close();
+            return;
+          }
+
+          pool = new SocketPool(identifier, maxSockets);
           this.socketPools.push(pool);
 
         }
