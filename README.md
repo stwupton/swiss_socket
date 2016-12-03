@@ -1,4 +1,6 @@
 # Swiss Socket
+
+[![Join the chat at https://gitter.im/swiss_socket/Lobby](https://badges.gitter.im/swiss_socket/Lobby.svg)](https://gitter.im/swiss_socket/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Node, WebSocket server made in TypeScript.
 
 ## Install
